@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT | NEXA</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+:root{
+  --lime:#D7FF00;
+  --lime-2:#B9F500;
+  --lime-soft:#F3FFD0;
+  --white:#FFFFFF;
+  --black:#101010;
+  --paper:#F7F7F2;
+  --muted:#5B5B52;
+  --line:4px;
+  --shadow:8px 8px 0 var(--black);
+  --shadow-sm:5px 5px 0 var(--black);
+  --radius:22px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html,body{width:100%;min-height:100%;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;min-height:100dvh;overflow-x:hidden;
+  font-family:'Poppins',sans-serif;color:var(--black);
+  background:
+    radial-gradient(circle at 12% 10%, rgba(215,255,0,.30), transparent 24%),
+    radial-gradient(circle at 90% 88%, rgba(215,255,0,.20), transparent 26%),
+    linear-gradient(135deg,#fff 0%,#f8f8f2 48%,#fff 100%);
+  position:relative;isolation:isolate;
+}
+body::before,body::after{
+  content:'';position:fixed;z-index:-1;pointer-events:none;
+  border:var(--line) solid var(--black);background:var(--lime);
+  box-shadow:var(--shadow-sm);
+}
+body::before{width:86px;height:86px;top:5vh;left:-26px;transform:rotate(-12deg);animation:floatA 7s ease-in-out infinite}
+body::after{width:64px;height:64px;right:-18px;bottom:9vh;background:var(--white);transform:rotate(13deg);animation:floatB 8s ease-in-out infinite}
+
+.container.dashboard-shell{
+  width:100%;max-width:none!important;min-height:100vh;min-height:100dvh;
+  padding:clamp(14px,2vw,28px)!important;margin:0;
+  display:block!important;
+}
+.dashboard-frame{width:100%;max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+.neo-topbar{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;
+  padding:18px 20px;background:var(--white);border:var(--line) solid var(--black);
+  border-radius:var(--radius);box-shadow:var(--shadow);position:relative;overflow:hidden;
+  animation:rise .55s var(--ease) both;
+}
+.neo-topbar::after{content:'';position:absolute;inset:0 auto 0 -35%;width:28%;background:rgba(215,255,0,.28);transform:skewX(-20deg);animation:sweep 6s ease-in-out infinite;pointer-events:none}
+.brand-block{display:flex;align-items:center;gap:14px;min-width:0}
+.brand-mark{
+  width:52px;height:52px;flex:0 0 52px;border:var(--line) solid var(--black);border-radius:16px;
+  background:var(--lime);box-shadow:var(--shadow-sm);display:grid;place-items:center;font-weight:900;font-size:16px;
+  transform:rotate(-3deg);animation:markIn .65s .08s var(--ease) both;
+}
+.brand-copy{min-width:0}.brand-title{margin:0;font-size:clamp(18px,2.7vw,26px);font-weight:900;letter-spacing:-.04em;line-height:1.05;white-space:nowrap}.brand-sub{margin:4px 0 0;color:var(--muted);font-size:12px;font-weight:600}
+.live-badge{white-space:nowrap;padding:10px 14px;background:var(--lime);border:var(--line) solid var(--black);border-radius:999px;box-shadow:var(--shadow-sm);font-size:11px;font-weight:900;letter-spacing:.07em;animation:pulseNeo 2.7s ease-in-out infinite}
+
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:stretch}
+.neo-card{
+  position:relative;background:var(--white);border:var(--line) solid var(--black);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden;min-width:0;animation:rise .6s var(--ease) both;
+}
+.neo-card:nth-child(2){animation-delay:.08s}
+.neo-card::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 0 36%,rgba(255,255,255,.8) 48%,transparent 58%);transform:translateX(-135%);animation:sweep 8s ease-in-out infinite;pointer-events:none}
+.card-inner{padding:22px;height:100%;display:flex;flex-direction:column}
+.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.section-title{margin:0;font-size:18px;font-weight:900;letter-spacing:-.03em}.section-note{margin:4px 0 0;color:var(--muted);font-size:11px;font-weight:600;line-height:1.5}
+.corner-chip{padding:7px 9px;border:3px solid var(--black);border-radius:10px;background:var(--lime-soft);box-shadow:3px 3px 0 var(--black);font-size:10px;font-weight:900;white-space:nowrap}
+
+.field-block{display:flex;flex-direction:column;gap:8px;margin-bottom:15px}.field-label{font-size:11px;font-weight:800;letter-spacing:.01em}
+.input-wrap{display:flex;align-items:stretch;min-width:0}.input-icon{width:46px;flex:0 0 46px;display:grid;place-items:center;background:var(--lime);border:var(--line) solid var(--black);border-right:0;border-radius:14px 0 0 14px}
+.form-control-custom{width:100%;min-width:0;background:var(--white)!important;border:var(--line) solid var(--black)!important;border-radius:0 14px 14px 0!important;color:var(--black)!important;box-shadow:var(--shadow-sm)!important;outline:none!important;min-height:50px;padding:11px 13px;font-weight:650;transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s ease}
+.form-control-custom:focus{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--lime)!important;background:#FCFFF2!important}.form-control-custom::placeholder{color:#74746A!important;opacity:1}
+textarea.form-control-custom{min-height:112px;resize:vertical;border-radius:14px!important;box-shadow:var(--shadow-sm)!important}
+
+.btn-gradient-gold{display:flex!important;align-items:center;justify-content:center;gap:0;width:100%;position:relative;overflow:hidden;min-height:52px;padding:12px 16px!important;border:var(--line) solid var(--black)!important;border-radius:14px!important;background:var(--lime)!important;color:var(--black)!important;font-weight:900;box-shadow:var(--shadow-sm)!important;transition:transform .18s var(--ease),box-shadow .18s var(--ease),background .18s ease;animation:buttonIn .5s .2s var(--ease) both}
+.btn-gradient-gold::after{content:'';position:absolute;inset:0 auto 0 -38%;width:28%;background:rgba(255,255,255,.62);transform:skewX(-20deg);animation:buttonSweep 5s ease-in-out infinite;pointer-events:none}
+.btn-gradient-gold:hover,.btn-gradient-gold:focus{background:var(--lime-2)!important;color:var(--black)!important;transform:translate(3px,3px);box-shadow:2px 2px 0 var(--black)!important}.btn-gradient-gold:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--black)!important}
+
+.step-head{display:flex;align-items:center;gap:12px;margin-bottom:17px}.step-badge{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;background:var(--lime);border:var(--line) solid var(--black);border-radius:13px;box-shadow:var(--shadow-sm);font-size:16px;font-weight:950;animation:badgeFloat 2.8s ease-in-out infinite}.step-title{margin:0;font-size:16px;font-weight:900}.step-copy{margin:3px 0 0;color:var(--muted);font-size:11px;line-height:1.45}
+
+.buyer-card{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px;background:var(--lime-soft)!important;border:var(--line) dashed var(--black)!important;border-radius:14px;box-shadow:var(--shadow-sm);margin-bottom:14px;min-width:0}.buyer-card>div{min-width:0}.buyer-card small{display:block;color:var(--muted);font-size:10px;font-weight:700}.buyer-email{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:900}.gold-badge{background:var(--lime)!important;border:3px solid var(--black)!important;color:var(--black)!important;border-radius:999px!important;box-shadow:3px 3px 0 var(--black);font-size:9px;font-weight:950;white-space:nowrap}
+
+
+.waiting-state{position:absolute;left:22px;right:22px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:12px;padding:15px;background:var(--paper);border:3px solid var(--black);border-radius:14px;box-shadow:var(--shadow-sm);animation:rise .55s .14s var(--ease) both}.waiting-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;background:var(--lime);border:3px solid var(--black);border-radius:12px;box-shadow:3px 3px 0 var(--black)}.waiting-state strong{display:block;font-size:12px;font-weight:900}.waiting-state span:not(.badge){display:block;color:var(--muted);font-size:10px;margin-top:2px}
+
+.status-card{background:var(--black);color:var(--white);border:var(--line) solid var(--black);border-left:14px solid var(--lime);border-radius:var(--radius);box-shadow:var(--shadow);position:relative;overflow:hidden;animation:rise .6s .14s var(--ease) both;min-width:0}
+.status-card::after{content:'';position:absolute;left:0;right:0;top:-130%;height:70%;background:linear-gradient(180deg,transparent,rgba(215,255,0,.18),transparent);animation:scan 3.5s linear infinite;pointer-events:none}
+.status-inner{padding:18px 20px}.status-head{display:flex;align-items:center;gap:9px;margin-bottom:7px}.status-label{color:var(--lime);font-size:10px;font-weight:900;letter-spacing:.08em}.status-text{margin:0;white-space:pre-line;font:650 12px/1.6 monospace;color:#fff}
+.spinner-grow.text-warning{background-color:var(--lime)!important}
+
+.back-link{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:8px 0 0;color:var(--muted)!important;font-size:11px!important;font-weight:700}.back-link:hover{color:var(--black)!important}
+.text-readable-muted{color:var(--muted)!important}.gradient-gold-text{color:var(--black)!important;background:none!important;-webkit-text-fill-color:initial!important}.text-white{color:var(--black)!important}.text-warning,.text-success,.text-primary,.text-info,.text-danger{color:var(--black)!important}
+.bg-dark,.bg-warning-subtle,.alert-dark{background:var(--white)!important;color:var(--black)!important}.border-warning,.border-success,.border-info,.border-danger{border-color:var(--black)!important}
+.alert{border:var(--line) solid var(--black)!important;border-radius:14px!important;box-shadow:var(--shadow-sm);padding:13px 14px!important;font-size:11px!important;line-height:1.55;animation:rise .55s var(--ease) both}
+
+/* Welcome modal — same visual language, compact hierarchy */
+.modal-content-glass{background:var(--white)!important;border:var(--line) solid var(--black)!important;border-radius:24px!important;color:var(--black)!important;box-shadow:12px 12px 0 var(--black)!important;animation:modalIn .45s var(--ease) both}.modal-backdrop.show{background:var(--lime);opacity:.58;animation:backdrop .3s ease both}.modal-icon-header{width:66px;height:66px;display:grid;place-items:center;margin:0 auto 13px;background:var(--lime)!important;border:var(--line) solid var(--black)!important;border-radius:16px!important;box-shadow:var(--shadow-sm);animation:badgeFloat 2.7s ease-in-out infinite}.modal-body .bg-dark{border:var(--line) solid var(--black)!important;border-radius:14px!important;box-shadow:var(--shadow-sm)}
+
+@keyframes rise{0%{opacity:0;transform:translateY(22px)}100%{opacity:1;transform:none}}
+@keyframes buttonIn{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:none}}
+@keyframes markIn{0%{opacity:0;transform:rotate(-8deg) scale(.8)}100%{opacity:1;transform:rotate(-3deg) scale(1)}}
+@keyframes sweep{0%,45%{transform:translateX(-135%)}65%,100%{transform:translateX(420%)}}
+@keyframes buttonSweep{0%,55%{left:-38%}78%,100%{left:135%}}
+@keyframes badgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px) rotate(-1deg)}}
+@keyframes pulseNeo{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes scan{0%{top:-130%}100%{top:150%}}
+@keyframes modalIn{0%{opacity:0;transform:translateY(26px) scale(.95)}100%{opacity:1;transform:none}}
+@keyframes backdrop{from{opacity:0}to{opacity:.58}}
+@keyframes floatA{0%,100%{transform:translateY(0) rotate(-12deg)}50%{transform:translateY(15px) rotate(-7deg)}}
+@keyframes floatB{0%,100%{transform:translateY(0) rotate(13deg)}50%{transform:translateY(-12px) rotate(7deg)}}
+
+@media(max-width:900px){.dashboard-grid{grid-template-columns:1fr}.dashboard-frame{max-width:760px}}
+@media(max-width:600px){
+  .container.dashboard-shell{padding:10px!important}.dashboard-frame{gap:12px}.neo-topbar{grid-template-columns:1fr;box-shadow:6px 6px 0 var(--black);padding:15px}.live-badge{justify-self:start}.card-inner{padding:16px}.neo-card,.status-card{box-shadow:6px 6px 0 var(--black)}.section-head{margin-bottom:15px}.buyer-card{align-items:flex-start;flex-direction:column}.corner-chip{font-size:9px}.brand-sub{font-size:10px}.brand-title{white-space:normal}.waiting-state{left:16px;right:16px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+    <div class="container dashboard-shell">
+        <div class="dashboard-frame">
+            <header class="neo-topbar">
+                <div class="brand-block">
+                    <div class="brand-mark">N|X</div>
+                    <div class="brand-copy">
+                        <h1 class="brand-title">PROJECT | NEXA</h1>
+                        <p class="brand-sub">Premium dashboard</p>
+                    </div>
+                </div>
+                <div class="live-badge">ONLINE</div>
+            </header>
+
+            <main class="dashboard-grid">
+                <section class="neo-card">
+                    <div class="card-inner">
+                        <div class="section-head">
+                            <div>
+                                <h2 class="section-title">Order Setup</h2>
+                                <p class="section-note">Atur identitas order sebelum memproses buyer.</p>
+                            </div>
+                            <div class="corner-chip">STEP 01</div>
+                        </div>
+
+                        <div class="field-block">
+                            <label for="orderIdInput" class="field-label">Custom Order ID</label>
+                            <div class="input-wrap">
+                                <span class="input-icon"><i class="fa-solid fa-tag"></i></span>
+                                <input type="text" class="form-control form-control-custom fw-semibold" id="orderIdInput" value="NEXA-VIP-0000-">
+                            </div>
+                        </div>
+
+                        <div id="step1">
+                            <div class="step-head">
+                                <span class="step-badge">1</span>
+                                <div>
+                                    <h3 class="step-title">Buyer Verification</h3>
+                                    <p class="step-copy">Kirim link verifikasi ke email buyer.</p>
+                                </div>
+                            </div>
+
+                            <div class="field-block">
+                                <label for="emailInput" class="field-label">Email Buyer</label>
+                                <div class="input-wrap">
+                                    <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+                                    <input type="email" class="form-control form-control-custom" id="emailInput" placeholder="emailbuyer@gmail.com">
+                                </div>
+                            </div>
+
+                            <button class="btn btn-gradient-gold" onclick="sendMagicLink()">
+                                <i class="fa-solid fa-paper-plane me-2"></i>Kirim Link Verifikasi
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="neo-card">
+                    <div class="card-inner">
+                        <div class="section-head">
+                            <div>
+                                <h2 class="section-title">Premium Execution</h2>
+                                <p class="section-note">Validasi link buyer lalu jalankan proses.</p>
+                            </div>
+                            <div class="corner-chip">STEP 02</div>
+                        </div>
+
+                        <div id="step2" style="display:none;">
+                            <div class="step-head">
+                                <span class="step-badge">2</span>
+                                <div>
+                                    <h3 class="step-title">Verification & Execution</h3>
+                                    <p class="step-copy">Tempel link verifikasi dari buyer.</p>
+                                </div>
+                            </div>
+
+                            <div class="buyer-card">
+                                <div>
+                                    <small>Target buyer</small>
+                                    <span id="targetBuyerDisplay" class="buyer-email">AkunAm@gmail.com</span>
+                                </div>
+                                <span class="badge gold-badge px-3 py-2">UNLIMITED</span>
+                            </div>
+
+                            <div class="alert alert-dark small mb-3">
+                                <i class="fa-solid fa-circle-exclamation me-2"></i>
+                                Minta buyer menyalin link verifikasi dari email, lalu tempelkan di bawah.
+                            </div>
+
+                            <div class="field-block">
+                                <label for="linkInput" class="field-label">Magic Link / Verification URL</label>
+                                <textarea class="form-control form-control-custom" id="linkInput" rows="3" placeholder="https://alightcreative.com/login?..." ></textarea>
+                            </div>
+
+                            <button class="btn btn-gradient-gold mb-2" onclick="processPremium()">
+                                <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Proses Premium
+                            </button>
+                            <button class="btn btn-link back-link" onclick="resetForm()">
+                                <i class="fa-solid fa-arrow-left"></i>Batal / Ganti Email
+                            </button>
+                        </div>
+
+                        <div id="step2Placeholder" class="waiting-state">
+                            <div class="waiting-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                            <div>
+                                <strong>Menunggu buyer</strong>
+                                <span>Email buyer belum dikirim</span>
+                            </div>
+                            <span class="badge gold-badge px-3 py-2">READY</span>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <div id="statusLog" class="status-card p-0 mt-0 d-none">
+                <div class="status-inner">
+                    <div class="status-head">
+                        <span class="spinner-grow spinner-grow-sm text-warning" id="logSpinner"></span>
+                        <span class="status-label">PROJECT | NEXA — SYSTEM LOG</span>
+                    </div>
+                    <p id="logText" class="status-text">Menunggu aktivitas…</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pop-Up Welcome Info VIP -->
+    <div class="modal fade" id="infoModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-glass p-3">
+                <div class="modal-body text-center pt-4">
+                    <div class="modal-icon-header">
+                        <i class="fa-solid fa-crown text-warning fs-2"></i>
+                    </div>
+                    <div class="mb-2">
+                        <span class="badge gold-badge px-3 py-1 rounded-pill">VIP PREMIUM EDITION</span>
+                    </div>
+                    <h4 class="fw-bold mb-2 gradient-gold-text">PROJECT | NEXA</h4>
+                    <p class="text-readable-muted small mb-4">
+                        Selamat datang! Anda sedang menggunakan versi Premium VIP tanpa batasan limit dan tanpa sistem koin.
+                    </p>
+                    
+                    <div class="text-start bg-dark bg-opacity-75 p-3 rounded-3 border border-warning border-opacity-50 mb-4 small">
+                        <div class="d-flex mb-2">
+                            <i class="fa-solid fa-infinity text-warning me-2 mt-1 fs-6"></i>
+                            <span class="text-white"><strong>Unlimited Access:</strong> Memproses akun buyer sepuasnya tanpa takut kehabisan limit/saldo.</span>
+                        </div>
+                        <div class="d-flex mb-2">
+                            <i class="fa-solid fa-pen-to-square text-warning me-2 mt-1 fs-6"></i>
+                            <span class="text-white"><strong>Custom Order ID:</strong> Bebas mengubah prefix ID Transaksi lisensi pesanan.</span>
+                        </div>
+                        <div class="d-flex">
+                            <i class="fa-solid fa-bolt text-success me-2 mt-1 fs-6"></i>
+                            <span class="text-white"><strong>Sistem Otomatis:</strong> Eksekusi lisensi premium 1 Tahun secara instan.</span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-gradient-gold w-100 py-3" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-circle-check me-2"></i> Akses Panel VIP Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const CONFIG = {
+            API_KEY: "AIzaSyDtG1AU22ErnQD60AzBAcaknySiz9_CEq0",
+            PRODUCT_ID: "am.full.sub.annual.19q4",
+            TOKEN: "mmgaobamlahbbeccfplmbkbb.AO-J1OzqG0or_GJJIx-ms8GrTm-jaglCRfhQSRPUZKpl2YspYS-oN7_94uv8RC5vQbvd_Ios2pPDStZ2n7F0hLE3FiOU7HS3R6Fquulv5xLXFECSv4ctElw",
+            SKU_TYPE: "subs",
+            FIREBASE_INSTANCE_ID_TOKEN: "cSDnCyp3T-uwp07z3tL86T:APA91bFkmvvsHw5nnqa1SBFci-99DRsKClLiETdRrVcJjS5yBx1v_FbCb1d8WhBuea_zmwnYBktyTIzcRhN4b6uNOUur9wPc0gKXmJDoZic0LhNq5V2s0xI",
+            HEADERS: {
+                "Content-Type": "application/json",
+                "X-Android-Package": "com.alightcreative.motion",
+                "X-Android-Cert": "ECA6BF91B8715A6F810ED0BBFC65B6CD578F52A8"
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+            infoModal.show();
+        });
+
+        function showLog(text, isError = false) {
+            const logBox = document.getElementById('statusLog');
+            const logText = document.getElementById('logText');
+            const spinner = document.getElementById('logSpinner');
+            
+            logBox.classList.remove('d-none');
+            logText.innerText = text;
+
+            if (isError) {
+                spinner.classList.add('d-none');
+                logText.className = "d-block text-danger font-monospace";
+            } else {
+                spinner.classList.remove('d-none');
+                logText.className = "d-block text-warning font-monospace";
+            }
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function extractOobCode(fullUrl) {
+            if (!fullUrl) return null;
+            try {
+                let cleanUrl = fullUrl.replace(/&amp;/g, '&');
+                try { cleanUrl = decodeURIComponent(cleanUrl); } catch(e) {}
+                
+                try {
+                    const urlObj = new URL(cleanUrl);
+                    let oobCode = urlObj.searchParams.get('oobCode');
+                    if (!oobCode) {
+                        const nestedLink = urlObj.searchParams.get('link') || urlObj.searchParams.get('q') || urlObj.searchParams.get('url');
+                        if (nestedLink) {
+                            const innerUrlObj = new URL(nestedLink);
+                            oobCode = innerUrlObj.searchParams.get('oobCode');
+                        }
+                    }
+                    if (oobCode) return oobCode.replace(/[^a-zA-Z0-9_-]/g, '');
+                } catch (e) {}
+
+                const match = cleanUrl.match(/[?&]oobCode=([a-zA-Z0-9_-]+)/i) || cleanUrl.match(/oobCode=([a-zA-Z0-9_-]+)/i);
+                if (match && match[1]) return match[1];
+                return null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function sendMagicLink() {
+            const email = document.getElementById('emailInput').value;
+            if (!email || !email.includes('@')) {
+                alert('Format email buyer tidak valid!');
+                return;
+            }
+
+            showLog("Connecting to Alight Motion Server & Sending Magic Link to Buyer...");
+
+            try {
+                await fetch(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/createAuthUri?key=${CONFIG.API_KEY}`, {
+                    method: 'POST',
+                    headers: CONFIG.HEADERS,
+                    body: JSON.stringify({ identifier: email, continueUri: "http://localhost" })
+                });
+
+                const res = await fetch(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key=${CONFIG.API_KEY}`, {
+                    method: 'POST',
+                    headers: CONFIG.HEADERS,
+                    body: JSON.stringify({
+                        requestType: 6,
+                        email: email,
+                        androidInstallApp: true,
+                        canHandleCodeInApp: true,
+                        continueUrl: "https://alightcreative.com?ui_sid=0366624874&ui_sd=0",
+                        iosBundleId: "com.alightcreative.motion",
+                        androidPackageName: "com.alightcreative.motion",
+                        androidMinimumVersion: "585",
+                        clientType: "CLIENT_TYPE_ANDROID"
+                    })
+                });
+
+                if (res.ok) {
+                    showLog("Magic Link successfully sent! Ask buyer to copy button link from email and paste in Step 2.");
+                    document.getElementById('targetBuyerDisplay').innerText = email;
+                    document.getElementById('step1').style.display = 'none';
+                    document.getElementById('step2').style.display = 'block';
+                    document.getElementById('step2Placeholder').style.display = 'none';
+                } else {
+                    const err = await res.json();
+                    showLog("Failed to send verification email: " + JSON.stringify(err), true);
+                }
+            } catch (err) {
+                showLog("Connection error: " + err.message, true);
+            }
+        }
+
+        async function processPremium() {
+            const email = document.getElementById('emailInput').value;
+            const rawLink = document.getElementById('linkInput').value;
+            const customPrefix = document.getElementById('orderIdInput').value || "NEXA-VIP-0000-";
+
+            if (!rawLink) {
+                alert('Silakan tempel (paste) URL verifikasi yang Anda dapatkan dari buyer!');
+                return;
+            }
+
+            const oobCode = extractOobCode(rawLink);
+            if (!oobCode) {
+                alert('URL Verifikasi tidak valid atau parameter oobCode hilang/kedaluwarsa!');
+                return;
+            }
+
+            showLog("Validating OobCode & Authenticating Buyer Account...");
+
+            try {
+                const signinRes = await fetch(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/emailLinkSignin?key=${CONFIG.API_KEY}`, {
+                    method: 'POST',
+                    headers: CONFIG.HEADERS,
+                    body: JSON.stringify({
+                        email: email,
+                        oobCode: oobCode,
+                        clientType: "CLIENT_TYPE_ANDROID"
+                    })
+                });
+
+                const signinData = await signinRes.json();
+                if (!signinRes.ok) throw new Error(JSON.stringify(signinData));
+
+                const idToken = signinData.idToken;
+
+                showLog("Authentication Success! Injecting Premium Alight Motion License...");
+
+                const codeOrder = getRandomInt(10000, 99999).toString();
+                const finalOrderId = customPrefix + codeOrder;
+
+                const premiumRes = await fetch('https://us-central1-alight-creative.cloudfunctions.net/verifyPurchase', {
+                    method: 'POST',
+                    headers: {
+                        "authorization": "Bearer " + idToken,
+                        "firebase-instance-id-token": CONFIG.FIREBASE_INSTANCE_ID_TOKEN,
+                        "content-type": "application/json; charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        data: {
+                            productId: CONFIG.PRODUCT_ID,
+                            token: CONFIG.TOKEN,
+                            skuType: CONFIG.SKU_TYPE,
+                            orderId: finalOrderId
+                        }
+                    })
+                });
+
+                const premiumData = await premiumRes.json();
+
+                document.getElementById('logSpinner').classList.add('d-none');
+                showLog("SUCCESS VIP! Buyer Account (" + email + ") is now PREMIUM!\nOrder ID: " + finalOrderId + "\nPowered by PROJECT | NEXA");
+                alert("Aktivasi Sukses! Akun buyer berhasil diubah menjadi Premium VIP.");
+
+            } catch (err) {
+                showLog("Activation Failed: " + err.message, true);
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step2Placeholder').style.display = 'flex';
+            document.getElementById('linkInput').value = '';
+            document.getElementById('statusLog').classList.add('d-none');
+        }
+    </script>
+</body>
+</html>

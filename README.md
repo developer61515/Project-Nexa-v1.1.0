@@ -1,1 +1,2 @@
-# Project-Nexa-v1.1.0
+# PROJECT | NEXA
+Premium dashboard project.
